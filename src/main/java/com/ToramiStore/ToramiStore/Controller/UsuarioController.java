@@ -20,8 +20,4 @@ public class UsuarioController {
     public User create(@RequestBody User user){
         return userservice.save(user);
     }
-
-
-
-
 }
