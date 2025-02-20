@@ -1,7 +1,6 @@
 package com.ToramiStore.ToramiStore.Controller;
 
 import com.ToramiStore.ToramiStore.Entity.Toy;
-import com.ToramiStore.ToramiStore.Entity.User;
 import com.ToramiStore.ToramiStore.Services.IToy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
