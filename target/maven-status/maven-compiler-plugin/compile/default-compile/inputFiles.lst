@@ -5,8 +5,16 @@
 /home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Dto/UserDTO.java
 /home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Entity/Toy.java
 /home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Entity/User.java
+/home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/request/EditUserRequest.java
+/home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/request/LoginRequest.java
 /home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/request/RegisterRequest.java
+/home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/request/UserRequest.java
+/home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/request/VerifyUserRequest.java
+/home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/response/EditUserResponse.java
+/home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/response/LoginResponse.java
 /home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/response/RegisterResponse.java
+/home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/response/UserResponse.java
+/home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/response/VerifyUserResponse.java
 /home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Repository/ToyRepository.java
 /home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Repository/UserRepository.java
 /home/jeazoal/IdeaProjects/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Services/IToy.java

@@ -42,14 +42,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/account/create", "/account/verify").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll() // Permitir todas las solicitudes
                 )
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
 
         return http.build();
     }
+
 
 }
 

@@ -3,8 +3,10 @@ package com.ToramiStore.ToramiStore.Services.impl;
 import com.ToramiStore.ToramiStore.Adapter.UserAdapter;
 import com.ToramiStore.ToramiStore.Dto.UserDTO;
 import com.ToramiStore.ToramiStore.Entity.User;
+import com.ToramiStore.ToramiStore.Payloads.request.EditUserRequest;
+import com.ToramiStore.ToramiStore.Payloads.request.LoginRequest;
 import com.ToramiStore.ToramiStore.Payloads.request.RegisterRequest;
-import com.ToramiStore.ToramiStore.Payloads.response.RegisterResponse;
+import com.ToramiStore.ToramiStore.Payloads.response.*;
 import com.ToramiStore.ToramiStore.Repository.UserRepository;
 import com.ToramiStore.ToramiStore.Services.IUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,7 @@ public class UserServiceImpl implements IUser {
 
 
     @Override
-    public boolean verifyUser(String token) {
+    public VerifyUserResponse verifyUser(String token) {
         User user = userRepository.findByVerificationToken(token);
 
         if (user != null) {
@@ -51,68 +53,60 @@ public class UserServiceImpl implements IUser {
                 user.setVerificationToken(null);
                 user.setTokenExpiration(null);
                 userRepository.save(user);
-                throw new RuntimeException("El token ha expirado.");
+                return new VerifyUserResponse("El token ha expirado.", false);
             }
 
             user.setActivo(true);
             user.setVerificationToken(null);
             user.setTokenExpiration(null);
             userRepository.save(user);
-            return true;
+            return new VerifyUserResponse("Cuenta verificada con éxito.", true);
         }
 
-        return false;
+        return new VerifyUserResponse("Token inválido o no encontrado.", false);
     }
 
 
+
     @Override
-    public User findById(Integer id) {
-        return userRepository.findById(id)
+    public UserResponse findById(Integer id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        // Aquí utilizamos el Adapter para convertir User a UserResponse
+        return userAdapter.toUserResponse(user);
+    }
+
+
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+        User user = userRepository.findByCorreo(request.getCorreo());
+
+        if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            return userAdapter.toLoginResponse(user);
+        }
+
+        throw new RuntimeException("Credenciales incorrectas");
     }
 
     @Override
-    public UserDTO editUser(UserDTO userDTO) {
-        Optional<User> optionalUser = userRepository.findById(userDTO.getIdUser());
+    public UserResponse editUser(Integer id, EditUserRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
-        if (optionalUser.isEmpty()) {
-            throw new RuntimeException("No se encontró el usuario con ID: " + userDTO.getIdUser());
-        }
+        // Actualizar los campos del usuario
+        user.setNombre(request.getNombre());
+        user.setApellidos(request.getApellidos());
+        user.setCorreo(request.getCorreo());
+        user.setDni(request.getDni());
+        user.setNumero(request.getNumero());
 
-        User user = optionalUser.get();
-        user.setNombre(userDTO.getNombre());
-        user.setApellidos(userDTO.getApellidos());
-        user.setCorreo(userDTO.getCorreo());
-        user.setDni(userDTO.getDni());
-        user.setNumero(userDTO.getNumero());
+        // Guardar los cambios en la base de datos
+        userRepository.save(user);
 
-        User updatedUser = userRepository.save(user);
-
-        return new UserDTO(
-                updatedUser.getIdUser(),
-                updatedUser.getNombre(),
-                updatedUser.getApellidos(),
-                updatedUser.getCorreo(),
-                updatedUser.getDni(),
-                updatedUser.getNumero()
-        );
-    }
-
-    @Override
-    public User login(String correo, String password) {
-        User user = userRepository.findByCorreo(correo);
-
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            return user;
-        }
-
-        return null;
-    }
-
-
-    private UserDTO convertToDTO(User user) {
-        return new UserDTO(
-                user.getIdUser(),
+        // Convertir a UserResponse y devolver
+        return new UserResponse(
                 user.getNombre(),
                 user.getApellidos(),
                 user.getCorreo(),
@@ -120,6 +114,9 @@ public class UserServiceImpl implements IUser {
                 user.getNumero()
         );
     }
+
+
+
 
 
 
