@@ -1,11 +1,13 @@
 package com.ToramiStore.ToramiStore.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +31,7 @@ public class User implements Serializable {
     @Column(name = "correo", unique = true, nullable = false)
     private String correo;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -38,14 +41,23 @@ public class User implements Serializable {
     @Column(name = "numero", unique = true)
     private String numero;
 
-    @Column(name = "activo")
+    @Column(name = "activo", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean activo = false;
+
 
     @Column(name = "token")
     private String verificationToken;
 
+    @Column(name = "token_expiration")
+    private LocalDateTime tokenExpiration;
+
+
     public void generateVerificationToken() {
-        this.verificationToken = UUID.randomUUID().toString();
+        if (this.verificationToken == null || this.tokenExpiration == null || LocalDateTime.now().isAfter(this.tokenExpiration)) {
+            this.verificationToken = UUID.randomUUID().toString();
+            this.tokenExpiration = LocalDateTime.now().plusMinutes(5); // Expira en 5 minutos
+        }
     }
+
 }
 
