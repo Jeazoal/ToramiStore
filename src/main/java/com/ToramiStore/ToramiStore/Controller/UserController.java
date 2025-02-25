@@ -3,6 +3,8 @@ package com.ToramiStore.ToramiStore.Controller;
 
 import com.ToramiStore.ToramiStore.Dto.UserDTO;
 import com.ToramiStore.ToramiStore.Entity.User;
+import com.ToramiStore.ToramiStore.Payloads.request.RegisterRequest;
+import com.ToramiStore.ToramiStore.Payloads.response.RegisterResponse;
 import com.ToramiStore.ToramiStore.Services.IUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,14 +19,15 @@ public class UserController {
     private IUser userservice;
 
     @PostMapping("/create")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
         try {
-            UserDTO newUser = userservice.register(user);
-            return ResponseEntity.ok("Registro exitoso. Verifica tu correo.");
+            RegisterResponse response = userservice.register(request);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al registrar usuario: " + e.getMessage());
+            return ResponseEntity.badRequest().body(new RegisterResponse("Error al registrar usuario: " + e.getMessage(), request.getCorreo(), false));
         }
     }
+
 
     @GetMapping("/verify")
     public ResponseEntity<?> verifyUser(@RequestParam String token) {
