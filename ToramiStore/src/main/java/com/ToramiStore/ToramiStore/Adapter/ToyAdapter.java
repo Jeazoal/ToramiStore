@@ -21,6 +21,7 @@ public class ToyAdapter {
         return toy;
     }
 
+    //No Tocar
     public PaymentRequest toPaymentRequest(Toy toy, int cantidad) {
         PaymentRequest paymentRequest = new PaymentRequest();
         paymentRequest.setTitle(toy.getNombreFigura());
