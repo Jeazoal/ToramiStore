@@ -8,4 +8,6 @@ import lombok.*;
 public class LoginResponse {
     private Integer idUser;
     private String message;
+    private String token;
+
 }

@@ -2,10 +2,12 @@
 
     import com.ToramiStore.ToramiStore.Payloads.request.*;
     import com.ToramiStore.ToramiStore.Payloads.response.*;
+    import com.ToramiStore.ToramiStore.Services.IToken;
     import com.ToramiStore.ToramiStore.Services.IUser;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
+    import org.springframework.security.core.token.TokenService;
     import org.springframework.web.bind.annotation.*;
 
     @RestController
@@ -15,7 +17,11 @@
         @Autowired
         private IUser userservice;
 
-        @PostMapping("/create")
+        @Autowired
+        private IToken tokenService;
+
+
+        @PostMapping("/register")
         public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
             try {
                 RegisterResponse response = userservice.register(request);
@@ -40,12 +46,16 @@
         @PostMapping("/login")
         public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
             try {
-                LoginResponse response = userservice.login(request);
+                LoginResponse response = userservice.login(request); // ✅ Lógica de autenticación
+                String token = tokenService.generateToken(request.getCorreo()); // ✅ Generamos el token
+                response.setToken(token); // ✅ Lo agregamos a la respuesta
                 return ResponseEntity.ok(response);
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse(null, "Credenciales incorrectas"));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new LoginResponse(null, "Credenciales incorrectas", null));
             }
         }
+
 
         @GetMapping("/{id}")
         public ResponseEntity<UserResponse> findById(@PathVariable Integer id) {

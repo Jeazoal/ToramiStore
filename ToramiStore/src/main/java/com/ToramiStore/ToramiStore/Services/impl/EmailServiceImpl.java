@@ -13,9 +13,8 @@ public class EmailServiceImpl {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendVerificationEmail(String to, String token) {
+    public void sendVerificationEmail(String to, String verificationUrl) {
         String subject = "Verificación de cuenta - ToramiStore";
-        String verificationUrl = "http://localhost:8080/toramistore/account/verify?token=" + token;
 
         String message = "<div style='font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>"
                 + "<h2 style='color: #333;'>¡Bienvenido a ToramiStore! 🎉</h2>"

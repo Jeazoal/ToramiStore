@@ -31,12 +31,15 @@
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Payloads/response/VerifyUserResponse.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Repository/ToyRepository.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Repository/UserRepository.java
+/home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Security/JwtAuthenticationFilter.java
+/home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Services/IToken.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Services/IToy.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Services/IUser.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Services/impl/EmailServiceImpl.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Services/impl/PaymentServiceImpl.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Services/impl/TokenServiceImpl.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Services/impl/ToyServiceImpl.java
+/home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Services/impl/UserDetailsServiceImpl.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Services/impl/UserServiceImpl.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/ToramiStoreApplication.java
 /home/jeazoal/IdeaProjects/ToramiStoreProyecto/ToramiStore/src/main/java/com/ToramiStore/ToramiStore/Utils/AdapterTemplate.java

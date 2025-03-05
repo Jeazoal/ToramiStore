@@ -24,9 +24,12 @@ com/ToramiStore/ToramiStore/Payloads/request/ResetPasswordRequest.class
 com/ToramiStore/ToramiStore/Services/impl/UserServiceImpl.class
 com/ToramiStore/ToramiStore/Controller/PaymentController.class
 com/ToramiStore/ToramiStore/Payloads/request/PaymentRequest.class
+com/ToramiStore/ToramiStore/Security/JwtAuthenticationFilter.class
+com/ToramiStore/ToramiStore/Services/IToken.class
 com/ToramiStore/ToramiStore/Services/impl/ToyServiceImpl.class
 com/ToramiStore/ToramiStore/Controller/ToyController.class
 com/ToramiStore/ToramiStore/Adapter/ToyAdapter.class
+com/ToramiStore/ToramiStore/Services/impl/UserDetailsServiceImpl.class
 com/ToramiStore/ToramiStore/Payloads/request/SaveRequest.class
 com/ToramiStore/ToramiStore/Payloads/request/EditUserRequest.class
 com/ToramiStore/ToramiStore/Services/IUser.class

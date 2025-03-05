@@ -46,10 +46,14 @@ public class UserAdapter {
         );
     }
 
-
-    public LoginResponse toLoginResponse(User user) {
-        return new LoginResponse(user.getIdUser(), "Login exitoso");
+    public static LoginResponse toLoginResponse(User user, String token) {
+        return new LoginResponse(
+                user.getIdUser(),
+                "Login exitoso",
+                token
+        );
     }
+
 
     public ForgotPasswordResponse toForgotPasswordResponse() {
         return new ForgotPasswordResponse("Se ha enviado un correo con las instrucciones para restablecer la contraseña.");

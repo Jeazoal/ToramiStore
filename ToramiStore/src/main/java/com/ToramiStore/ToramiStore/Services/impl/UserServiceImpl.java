@@ -8,9 +8,11 @@ import com.ToramiStore.ToramiStore.Exceptions.UserNotFoundException;
 import com.ToramiStore.ToramiStore.Payloads.request.*;
 import com.ToramiStore.ToramiStore.Payloads.response.*;
 import com.ToramiStore.ToramiStore.Repository.UserRepository;
+import com.ToramiStore.ToramiStore.Services.IToken;
 import com.ToramiStore.ToramiStore.Services.IUser;
 import com.ToramiStore.ToramiStore.Utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -30,17 +32,28 @@ public class UserServiceImpl implements IUser {
     @Autowired
     private UserAdapter userAdapter;
 
+    @Autowired
+    private IToken tokenService;
+
+
+
+
+
+
     @Override
     public RegisterResponse register(RegisterRequest request) {
         User user = userAdapter.toEntity(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        String token = JwtUtil.generateToken(user.getCorreo());
+        String token = JwtUtil.generateVerifyToken(user.getCorreo());
         user.setVerificationToken(token);
         user.setTokenExpiration(LocalDateTime.now().plusMinutes(1));
 
         userRepository.save(user);
-        emailImpl.sendVerificationEmail(user.getCorreo(), token);
+
+        String verificationLink = "http://localhost:8080/toramistore/account/verify?token=" + token;
+
+        emailImpl.sendVerificationEmail(user.getCorreo(), verificationLink);
 
         return new RegisterResponse("Registro exitoso. Verifica tu correo.", user.getCorreo(), false);
     }
@@ -49,9 +62,10 @@ public class UserServiceImpl implements IUser {
     public VerifyUserResponse verifyUser(String token) {
         try {
             String email = JwtUtil.decodeToken(token).getSubject();
-            User user = userRepository.findByCorreo(email);
+            User user = userRepository.findByCorreo(email)
+                    .orElseThrow(() -> new InvalidTokenException("Token inválido o no encontrado."));
 
-            if (user == null || !token.equals(user.getVerificationToken())) {
+            if (!token.equals(user.getVerificationToken())) {
                 throw new InvalidTokenException("Token inválido o no encontrado.");
             }
 
@@ -61,27 +75,28 @@ public class UserServiceImpl implements IUser {
             userRepository.save(user);
 
             return new VerifyUserResponse("Cuenta verificada con éxito.", true);
-
         } catch (Exception e) {
             throw new InvalidTokenException("Token inválido o expirado.");
         }
     }
 
 
+
     @Override
     public LoginResponse login(LoginRequest request) {
-        User user = userRepository.findByCorreo(request.getCorreo());
+        User user = userRepository.findByCorreo(request.getCorreo())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new AuthenticationException("Credenciales incorrectas.");
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Contraseña incorrecta");
         }
 
-        if (!user.isActivo()) {
-            throw new AuthenticationException("Debes verificar tu cuenta antes de iniciar sesión.");
-        }
+        String token = tokenService.generateToken(user.getCorreo());
 
-        return userAdapter.toLoginResponse(user);
+        return UserAdapter.toLoginResponse(user, token);
     }
+
+
 
 
     @Override
@@ -113,24 +128,23 @@ public class UserServiceImpl implements IUser {
         return userAdapter.toUserResponse(user);
     }
 
+
     @Override
     public ForgotPasswordResponse forgotPassword(ForgotPasswordRequest request) {
-        User user = userRepository.findByCorreo(request.getCorreo());
-        if (user == null) {
-            throw new UserNotFoundException("No se encontró un usuario con el correo proporcionado.");
-        }
+        User user = userRepository.findByCorreo(request.getCorreo())
+                .orElseThrow(() -> new UserNotFoundException("No se encontró un usuario con el correo proporcionado."));
 
         String token = JwtUtil.generateTokenPassword(user.getCorreo());
         user.setVerificationToken(token);
         user.setTokenExpiration(LocalDateTime.now().plusMinutes(2));
         userRepository.save(user);
 
-        String resetLink = "http://localhost:8080/toramistore/account/reset-password?token=" + token;
-
+        String resetLink = "http://localhost:8080/account/reset-password?token=" + token;
         emailImpl.sendPasswordResetEmail(user.getCorreo(), resetLink);
 
         return userAdapter.toForgotPasswordResponse();
     }
+
 
     @Override
     public ResetPasswordResponse resetPassword(String token, ResetPasswordRequest request) {

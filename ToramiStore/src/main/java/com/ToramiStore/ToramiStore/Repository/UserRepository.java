@@ -9,11 +9,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,Integer> {
 
     User findByVerificationToken(String token);
-    User findByCorreo(String correo);
+    Optional<User> findByCorreo(String correo);
 
     @Modifying
     @Transactional
