@@ -120,16 +120,13 @@ public class UserServiceImpl implements IUser {
             throw new UserNotFoundException("No se encontró un usuario con el correo proporcionado.");
         }
 
-        // 🔐 Generar un token JWT de recuperación de contraseña (válido por 2 minutos)
         String token = JwtUtil.generateTokenPassword(user.getCorreo());
         user.setVerificationToken(token);
         user.setTokenExpiration(LocalDateTime.now().plusMinutes(2));
         userRepository.save(user);
 
-        // 🔗 Generar el enlace de recuperación de contraseña
         String resetLink = "http://localhost:8080/toramistore/account/reset-password?token=" + token;
 
-        // 📧 Enviar el correo con el enlace de recuperación
         emailImpl.sendPasswordResetEmail(user.getCorreo(), resetLink);
 
         return userAdapter.toForgotPasswordResponse();
