@@ -5,9 +5,7 @@ import com.ToramiStore.ToramiStore.Entity.User;
 import com.ToramiStore.ToramiStore.Exceptions.AuthenticationException;
 import com.ToramiStore.ToramiStore.Exceptions.InvalidTokenException;
 import com.ToramiStore.ToramiStore.Exceptions.UserNotFoundException;
-import com.ToramiStore.ToramiStore.Payloads.request.EditUserRequest;
-import com.ToramiStore.ToramiStore.Payloads.request.LoginRequest;
-import com.ToramiStore.ToramiStore.Payloads.request.RegisterRequest;
+import com.ToramiStore.ToramiStore.Payloads.request.*;
 import com.ToramiStore.ToramiStore.Payloads.response.*;
 import com.ToramiStore.ToramiStore.Repository.UserRepository;
 import com.ToramiStore.ToramiStore.Services.IUser;
@@ -15,9 +13,7 @@ import com.ToramiStore.ToramiStore.Utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements IUser {
@@ -115,6 +111,48 @@ public class UserServiceImpl implements IUser {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con ID: " + id));
         return userAdapter.toUserResponse(user);
+    }
+
+    @Override
+    public ForgotPasswordResponse forgotPassword(ForgotPasswordRequest request) {
+        User user = userRepository.findByCorreo(request.getCorreo());
+        if (user == null) {
+            throw new UserNotFoundException("No se encontró un usuario con el correo proporcionado.");
+        }
+
+        // 🔐 Generar un token JWT de recuperación de contraseña (válido por 2 minutos)
+        String token = JwtUtil.generateTokenPassword(user.getCorreo());
+        user.setVerificationToken(token);
+        user.setTokenExpiration(LocalDateTime.now().plusMinutes(2));
+        userRepository.save(user);
+
+        // 🔗 Generar el enlace de recuperación de contraseña
+        String resetLink = "http://localhost:8080/toramistore/account/reset-password?token=" + token;
+
+        // 📧 Enviar el correo con el enlace de recuperación
+        emailImpl.sendPasswordResetEmail(user.getCorreo(), resetLink);
+
+        return userAdapter.toForgotPasswordResponse();
+    }
+
+    @Override
+    public ResetPasswordResponse resetPassword(String token, ResetPasswordRequest request) {
+        User user = userRepository.findByVerificationToken(token);
+
+        if (user == null || user.getTokenExpiration() == null || user.getTokenExpiration().isBefore(LocalDateTime.now())) {
+            throw new InvalidTokenException("Token inválido o expirado.");
+        }
+
+        if (passwordEncoder.matches(request.getNuevaPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("La nueva contraseña no puede ser igual a la anterior.");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNuevaPassword()));
+        user.setVerificationToken(null);
+        user.setTokenExpiration(null);
+        userRepository.save(user);
+
+        return userAdapter.toResetPasswordResponse();
     }
 
 }

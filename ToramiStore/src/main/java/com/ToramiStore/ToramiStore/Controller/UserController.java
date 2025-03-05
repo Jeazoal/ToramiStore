@@ -1,8 +1,6 @@
     package com.ToramiStore.ToramiStore.Controller;
 
-    import com.ToramiStore.ToramiStore.Payloads.request.EditUserRequest;
-    import com.ToramiStore.ToramiStore.Payloads.request.LoginRequest;
-    import com.ToramiStore.ToramiStore.Payloads.request.RegisterRequest;
+    import com.ToramiStore.ToramiStore.Payloads.request.*;
     import com.ToramiStore.ToramiStore.Payloads.response.*;
     import com.ToramiStore.ToramiStore.Services.IUser;
     import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +68,15 @@
             }
         }
 
+        @PostMapping("/forgot-password")
+        public ResponseEntity<ForgotPasswordResponse> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+            return ResponseEntity.ok(userservice.forgotPassword(request));
+        }
+
+        @PostMapping("/reset-password")
+        public ResponseEntity<ResetPasswordResponse> resetPassword(@RequestParam String token, @RequestBody ResetPasswordRequest request) {
+            return ResponseEntity.ok(userservice.resetPassword(token, request));
+        }
 
 
 

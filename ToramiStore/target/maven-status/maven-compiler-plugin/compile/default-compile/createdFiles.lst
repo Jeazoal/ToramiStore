@@ -7,17 +7,20 @@ com/ToramiStore/ToramiStore/Utils/AdapterTemplate.class
 com/ToramiStore/ToramiStore/Payloads/request/RegisterRequest.class
 com/ToramiStore/ToramiStore/Services/impl/TokenServiceImpl.class
 com/ToramiStore/ToramiStore/Config/SecurityConfig.class
+com/ToramiStore/ToramiStore/Payloads/response/ResetPasswordResponse.class
 com/ToramiStore/ToramiStore/Payloads/request/EditToyRequest.class
 com/ToramiStore/ToramiStore/Entity/Toy.class
 com/ToramiStore/ToramiStore/Payloads/response/UserResponse.class
 com/ToramiStore/ToramiStore/Services/impl/EmailServiceImpl.class
 com/ToramiStore/ToramiStore/Exceptions/GlobalExceptionHandler.class
+com/ToramiStore/ToramiStore/Payloads/response/ForgotPasswordResponse.class
 com/ToramiStore/ToramiStore/Adapter/UserAdapter.class
 com/ToramiStore/ToramiStore/Payloads/response/EditToyResponse.class
 com/ToramiStore/ToramiStore/Payloads/request/VerifyUserRequest.class
 com/ToramiStore/ToramiStore/Services/IToy.class
 com/ToramiStore/ToramiStore/Payloads/response/EditUserResponse.class
 com/ToramiStore/ToramiStore/Entity/User.class
+com/ToramiStore/ToramiStore/Payloads/request/ResetPasswordRequest.class
 com/ToramiStore/ToramiStore/Services/impl/UserServiceImpl.class
 com/ToramiStore/ToramiStore/Controller/PaymentController.class
 com/ToramiStore/ToramiStore/Payloads/request/PaymentRequest.class
@@ -31,5 +34,6 @@ com/ToramiStore/ToramiStore/Payloads/request/LoginRequest.class
 com/ToramiStore/ToramiStore/Payloads/response/SaveResponse.class
 com/ToramiStore/ToramiStore/Repository/UserRepository.class
 com/ToramiStore/ToramiStore/Payloads/response/VerifyUserResponse.class
+com/ToramiStore/ToramiStore/Payloads/request/ForgotPasswordRequest.class
 com/ToramiStore/ToramiStore/Services/impl/PaymentServiceImpl.class
 com/ToramiStore/ToramiStore/Payloads/request/UserRequest.class

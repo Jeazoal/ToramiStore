@@ -17,9 +17,6 @@
             this.userRepository = userRepository;
         }
 
-        public String generateToken() {
-            return UUID.randomUUID().toString();
-        }
 
         @Transactional
         @Scheduled(fixedRate = 60000)

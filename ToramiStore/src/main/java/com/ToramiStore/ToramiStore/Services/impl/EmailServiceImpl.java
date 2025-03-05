@@ -31,6 +31,23 @@ public class EmailServiceImpl {
         sendEmail(to, subject, message, true);
     }
 
+    public void sendPasswordResetEmail(String to, String resetUrl) {
+        String subject = "Recuperación de Contraseña - ToramiStore";
+
+        String message = "<div style='font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>"
+                + "<h2 style='color: #333;'>Recuperación de Contraseña 🔑</h2>"
+                + "<p>Has solicitado restablecer tu contraseña. Haz clic en el siguiente botón para continuar:</p>"
+                + "<a href='" + resetUrl + "' style='display: inline-block; padding: 10px 20px; font-size: 16px; color: white; background-color: #007bff; text-decoration: none; border-radius: 5px;'>Restablecer Contraseña</a>"
+                + "<p>O también puedes copiar y pegar el siguiente enlace en tu navegador:</p>"
+                + "<p><a href='" + resetUrl + "'>" + resetUrl + "</a></p>"
+                + "<p>Si no solicitaste este cambio, ignora este correo.</p>"
+                + "<hr style='margin-top: 20px;'/>"
+                + "<p style='font-size: 12px; color: #777;'>Este es un mensaje automático, por favor no respondas a este correo.</p>"
+                + "</div>";
+
+        sendEmail(to, subject, message, true);
+    }
+
     public void sendEmail(String to, String subject, String content, boolean isHtml) {
         try {
             MimeMessage message = mailSender.createMimeMessage();

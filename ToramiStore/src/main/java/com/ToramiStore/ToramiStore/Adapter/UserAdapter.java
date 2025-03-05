@@ -4,7 +4,9 @@ import com.ToramiStore.ToramiStore.Entity.User;
 import com.ToramiStore.ToramiStore.Payloads.request.EditUserRequest;
 import com.ToramiStore.ToramiStore.Payloads.request.LoginRequest;
 import com.ToramiStore.ToramiStore.Payloads.request.RegisterRequest;
+import com.ToramiStore.ToramiStore.Payloads.response.ForgotPasswordResponse;
 import com.ToramiStore.ToramiStore.Payloads.response.LoginResponse;
+import com.ToramiStore.ToramiStore.Payloads.response.ResetPasswordResponse;
 import com.ToramiStore.ToramiStore.Payloads.response.UserResponse;
 import org.springframework.stereotype.Component;
 
@@ -49,4 +51,11 @@ public class UserAdapter {
         return new LoginResponse(user.getIdUser(), "Login exitoso");
     }
 
+    public ForgotPasswordResponse toForgotPasswordResponse() {
+        return new ForgotPasswordResponse("Se ha enviado un correo con las instrucciones para restablecer la contraseña.");
+    }
+
+    public ResetPasswordResponse toResetPasswordResponse() {
+        return new ResetPasswordResponse("La contraseña se ha actualizado correctamente.");
+    }
 }
