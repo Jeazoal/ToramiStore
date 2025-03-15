@@ -1,6 +1,6 @@
 package com.ToramiStore.ToramiStore.Services.impl;
 
-import com.ToramiStore.ToramiStore.Entity.Toy;
+import com.ToramiStore.ToramiStore.Entity.Figura;
 import com.ToramiStore.ToramiStore.Payloads.request.PaymentRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
