@@ -4,6 +4,7 @@
     import com.ToramiStore.ToramiStore.Payloads.response.*;
     import com.ToramiStore.ToramiStore.Services.IToken;
     import com.ToramiStore.ToramiStore.Services.IUser;
+    import com.ToramiStore.ToramiStore.Utils.JwtUtil;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
@@ -19,6 +20,9 @@
 
         @Autowired
         private IToken tokenService;
+
+        @Autowired
+        private JwtUtil jwtUtil;
 
 
         @PostMapping("/register")
@@ -55,6 +59,22 @@
                         .body(new LoginResponse(null, "Credenciales incorrectas", null));
             }
         }
+
+        @GetMapping("/validate-token")
+        public ResponseEntity<Boolean> validateToken(@RequestHeader("Authorization") String token) {
+            try {
+                token = token.replace("Bearer ", "");
+                String email = jwtUtil.extractEmail(token);
+
+                if (email != null && jwtUtil.validateToken(token, email)) {
+                    return ResponseEntity.ok(true);
+                }
+                return ResponseEntity.ok(false);
+            } catch (Exception e) {
+                return ResponseEntity.ok(false);
+            }
+        }
+
 
 
         @GetMapping("/{id}")
