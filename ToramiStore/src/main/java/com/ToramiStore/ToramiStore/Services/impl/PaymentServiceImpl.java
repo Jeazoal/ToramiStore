@@ -7,6 +7,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.json.JSONObject;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
@@ -19,7 +22,7 @@ public class PaymentServiceImpl {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String createPayment(PaymentRequest paymentRequest) {
+    public String createPayment(PaymentRequest paymentRequest, Integer idFigura, Integer quantity) {
         try {
             JSONObject requestBody = new JSONObject();
             requestBody.put("items", List.of(new JSONObject()
@@ -35,6 +38,9 @@ public class PaymentServiceImpl {
                     .put("pending", "http://localhost:8080/toramistore/payment/pending")
             );
             requestBody.put("auto_return", "approved");
+            String externalReference = idFigura + "|" + quantity;
+            String encodedExternalReference = URLEncoder.encode(externalReference, StandardCharsets.UTF_8);
+            requestBody.put("external_reference", encodedExternalReference); // 👈 Usamos el valor codificado
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -51,6 +57,8 @@ public class PaymentServiceImpl {
             return null;
         }
     }
+
+
 
 
 }
