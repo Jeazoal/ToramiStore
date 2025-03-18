@@ -139,7 +139,7 @@ public class UserServiceImpl implements IUser {
         user.setTokenExpiration(LocalDateTime.now().plusMinutes(2));
         userRepository.save(user);
 
-        String resetLink = "http://localhost:8080/account/reset-password?token=" + token;
+        String resetLink = "http://localhost:8080/toramistore/account/reset-password?token=" + token;
         emailImpl.sendPasswordResetEmail(user.getCorreo(), resetLink);
 
         return userAdapter.toForgotPasswordResponse();
