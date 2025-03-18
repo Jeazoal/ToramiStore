@@ -6,6 +6,7 @@ import com.ToramiStore.ToramiStore.Services.IFigura;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FiguraServiceImpl implements IFigura {
@@ -16,10 +17,63 @@ public class FiguraServiceImpl implements IFigura {
         this.figuraRepository = figuraRepository;
     }
 
+    // ✅ CRUD de Figura
+    @Override
+    public Figura guardarFigura(Figura figura) {
+        return figuraRepository.save(figura);
+    }
+
+    @Override
+    public Optional<Figura> obtenerFiguraPorId(Integer id) {
+        return figuraRepository.findById(id);
+    }
+
+    @Override
+    public Figura actualizarFigura(Integer id, Figura figura) {
+        return figuraRepository.findById(id)
+                .map(figuraExistente -> {
+                    // Verifica si los datos no son nulos antes de actualizar
+                    if (figura.getCodigoFigura() != null) figuraExistente.setCodigoFigura(figura.getCodigoFigura());
+                    if (figura.getNombreFigura() != null) figuraExistente.setNombreFigura(figura.getNombreFigura());
+                    if (figura.getDescripcion() != null) figuraExistente.setDescripcion(figura.getDescripcion());
+                    if (figura.getImagenUrl() != null) figuraExistente.setImagenUrl(figura.getImagenUrl());
+                    if (figura.getPrecio() != null) figuraExistente.setPrecio(figura.getPrecio());
+                    if (figura.getCantidadInventario() != null) figuraExistente.setCantidadInventario(figura.getCantidadInventario());
+                    if (figura.getAltura() != null) figuraExistente.setAltura(figura.getAltura());
+                    if (figura.getPeso() != null) figuraExistente.setPeso(figura.getPeso());
+                    if (figura.getDestacado() != null) figuraExistente.setDestacado(figura.getDestacado());
+                    if (figura.getPreventa() != null) figuraExistente.setPreventa(figura.getPreventa());
+
+
+                    // Asignar relaciones con validación
+                    if (figura.getCategoria() != null) figuraExistente.setCategoria(figura.getCategoria());
+                    if (figura.getFabricante() != null) figuraExistente.setFabricante(figura.getFabricante());
+                    if (figura.getLinea() != null) figuraExistente.setLinea(figura.getLinea());
+                    if (figura.getMaterial() != null) figuraExistente.setMaterial(figura.getMaterial());
+                    if (figura.getFranquicia() != null) figuraExistente.setFranquicia(figura.getFranquicia());
+                    if (figura.getTematica() != null) figuraExistente.setTematica(figura.getTematica());
+                    if (figura.getEdicion() != null) figuraExistente.setEdicion(figura.getEdicion());
+
+                    return figuraRepository.save(figuraExistente);
+                })
+                .orElseThrow(() -> new RuntimeException("Figura no encontrada con ID: " + id));
+    }
+
+    @Override
+    public void eliminarFigura(Integer id) {
+        figuraRepository.deleteById(id);
+    }
+
     // ✅ Buscar figuras por nombre
     @Override
     public List<Figura> buscarPorNombre(String nombre) {
         return figuraRepository.buscarPorNombre(nombre);
+    }
+
+    // ✅ Buscar figura por código único
+    @Override
+    public Optional<Figura> buscarPorCodigoFigura(String codigoFigura) {
+        return figuraRepository.findByCodigoFigura(codigoFigura);
     }
 
     // ✅ Figuras destacadas
@@ -75,8 +129,8 @@ public class FiguraServiceImpl implements IFigura {
     }
 
     @Override
-    public List<Figura> obtenerPorCategoriaYMarca(Integer idCategoria, Integer idMarca) {
-        return figuraRepository.findByCategoriaIdAndMarcaId(idCategoria, idMarca);
+    public List<Figura> obtenerPorCategoriaYLinea(Integer idCategoria, Integer idLinea) {
+        return figuraRepository.findByCategoriaIdAndLineaId(idCategoria, idLinea);
     }
 
     @Override
@@ -94,4 +148,5 @@ public class FiguraServiceImpl implements IFigura {
         return figuraRepository.findByCategoriaIdAndEdicionId(idCategoria, idEdicion);
     }
 }
+
 

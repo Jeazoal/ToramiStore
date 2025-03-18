@@ -17,8 +17,12 @@ import java.util.UUID;
 public class Figura implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "figura_seq")
+    @SequenceGenerator(name = "figura_seq", sequenceName = "figura_id_seq", allocationSize = 1)
     private Integer id;
+
+    @Column(name = "codigo_figura", unique = true, updatable = false, nullable = false)
+    private String codigoFigura;  // 🔹 Se debe ingresar manualmente en la petición
 
     @Column(name = "nombre_figura", nullable = false)
     private String nombreFigura;
@@ -35,6 +39,12 @@ public class Figura implements Serializable {
     @Column(name = "cantidad_inventario", nullable = false)
     private Integer cantidadInventario;
 
+    @Column(name = "altura")
+    private Double altura;
+
+    @Column(name = "peso")
+    private Double peso;
+
     @Column(name = "destacado")
     private Boolean destacado;
 
@@ -44,7 +54,7 @@ public class Figura implements Serializable {
     @Column(name = "codigo_pedido", unique = true, updatable = false)
     private String codigoPedido;
 
-    // 🔹 Relaciones con otras entidades con "id_" en los nombres de las claves foráneas
+    // 🔹 Relaciones con otras entidades
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     @JsonIgnore
@@ -56,9 +66,9 @@ public class Figura implements Serializable {
     private Fabricante fabricante;
 
     @ManyToOne
-    @JoinColumn(name = "id_marca")
+    @JoinColumn(name = "id_linea") // Antes era "marca", ahora es "línea"
     @JsonIgnore
-    private Marca marca;
+    private Linea linea;
 
     @ManyToOne
     @JoinColumn(name = "id_material")
@@ -88,9 +98,10 @@ public class Figura implements Serializable {
     @ManyToMany(mappedBy = "figuras")
     private List<Oferta> ofertas;
 
-    // 🔹 Generar código único al insertar una figura
+    // 🔹 Generar códigos únicos al insertar una figura
     @PrePersist
-    public void generateCodigoPedido() {
+    @PreUpdate
+    public void generateCodigoUnico() {
         if (codigoPedido == null || codigoPedido.isEmpty()) {
             codigoPedido = "PED-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         }

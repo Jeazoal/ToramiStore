@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FiguraRepository extends JpaRepository<Figura, Integer> {
@@ -14,6 +15,9 @@ public interface FiguraRepository extends JpaRepository<Figura, Integer> {
     // ✅ Buscar figuras por nombre
     @Query("SELECT f FROM Figura f WHERE LOWER(f.nombreFigura) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     List<Figura> buscarPorNombre(@Param("nombre") String nombre);
+
+    // ✅ Buscar figura por código único
+    Optional<Figura> findByCodigoFigura(String codigoFigura);
 
     // ✅ Figuras destacadas
     List<Figura> findByDestacadoTrue();
@@ -39,9 +43,8 @@ public interface FiguraRepository extends JpaRepository<Figura, Integer> {
     // ✅ Figuras por categoría y filtros adicionales
     List<Figura> findByCategoriaId(Integer categoriaId);
     List<Figura> findByCategoriaIdAndFabricanteId(Integer categoriaId, Integer fabricanteId);
-    List<Figura> findByCategoriaIdAndMarcaId(Integer categoriaId, Integer marcaId);
+    List<Figura> findByCategoriaIdAndLineaId(Integer categoriaId, Integer lineaId);
     List<Figura> findByCategoriaIdAndMaterialId(Integer categoriaId, Integer materialId);
     List<Figura> findByCategoriaIdAndTematicaId(Integer categoriaId, Integer tematicaId);
     List<Figura> findByCategoriaIdAndEdicionId(Integer categoriaId, Integer edicionId);
 }
-
