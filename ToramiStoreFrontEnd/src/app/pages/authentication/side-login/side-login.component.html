@@ -1,0 +1,110 @@
+<div class="blank-layout-container justify-content-center">
+  <div class="position-relative row w-100 h-100">
+    <div class="col-lg-7 col-xl-8 p-0 image-column">
+      <div class="h-100">
+        <div class="image-container">
+          <img
+            src="/assets/images/backgrounds/login.png"
+            alt="login"
+            class="background-image"
+          />
+          <div class="overlay-gradient"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5 col-xl-4 p-0">
+      <div
+        class="p-32 d-flex align-items-start align-items-lg-center justify-content-center h-100"
+      >
+        <div class="row justify-content-center w-100">
+          <div class="col-lg-9 max-width-form">
+            <img
+              src="/assets/images/logos/logo.png"
+              alt="toramiStore"
+              style="max-width: 400px"
+            />
+
+            <h4 class="f-w-700 f-s-24 m-0"></h4>
+            <span class="f-s-14 d-block mat-body-1 m-t-8"></span>
+
+            <div class="or-border m-t-30">Ingreso al sistema</div>
+
+            <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
+              <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+                >Documento de Identidad</mat-label
+              >
+              <mat-form-field
+                appearance="outline"
+                class="w-100"
+                color="primary"
+              >
+                <input matInput formControlName="uname" />
+                @if(f['uname'].touched && f['uname'].invalid) {
+                <mat-hint class="m-b-16 error-msg">
+                  @if(f['uname'].errors && f['uname'].errors['required']) {
+                  <div class="text-error">
+                    Documento Identidad es requerido.
+                  </div>
+                  } @if(f['uname'].errors && f['uname'].errors['minlength']) {
+                  <div class="text-error">
+                    Documento Identidad deberia ser mínimo 8 dígitos.
+                  </div>
+                  }
+                </mat-hint>
+                }
+                <mat-icon matSuffix color="accent">person</mat-icon>
+              </mat-form-field>
+
+              <!-- password -->
+              <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+                >Contraseña</mat-label
+              >
+              <mat-form-field
+                appearance="outline"
+                class="w-100"
+                color="primary"
+              >
+                <input
+                  matInput
+                  [type]="typePasswordInput"
+                  formControlName="password"
+                />
+                @if(f['password'].touched && f['password'].invalid) {
+                <mat-hint class="m-b-16 error-msg">
+                  @if(f['password'].errors && f['password'].errors['required'])
+                  {
+                  <div class="text-error">Contraseña es requerida.</div>
+                  }
+                </mat-hint>
+                }
+                <mat-icon
+                  matSuffix
+                  color="accent"
+                  (click)="hideOrShowPassword()"
+                  style="cursor: pointer"
+                  >{{ showPassword ? "lock_open" : "lock" }}</mat-icon
+                >
+              </mat-form-field>
+              <button
+                mat-flat-button
+                color="primary"
+                class="w-100"
+                [disabled]="!form.valid"
+              >
+                Ingresar
+              </button>
+              <!-- input -->
+            </form>
+            <span
+              class="d-block f-w-500 d-block m-t-24"
+              style="position: fixed; bottom: 0"
+            >
+              &copy; Derechos Reservados TORAMI-STORE - 2025
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

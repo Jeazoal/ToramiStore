@@ -1,0 +1,296 @@
+<!-- <app-header></app-header> -->
+<header>
+  <div class="topbar-web">
+    <div class="branding d-none d-lg-flex align-items-center">
+      <a [routerLink]="['/']" class="d-flex">
+        <img
+          src="./assets/images/logos/logo.png"
+          width="80px"
+          class="align-middle m-2"
+          alt="logo"
+        />
+      </a>
+      <span class="text-white f-s-30"> T O R A M I</span>
+    </div>
+
+    <!-- Lista de Categorias -->
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="categorias"
+      aria-label="Notifications"
+    >
+      <mat-icon
+        matTooltip="Notificaciones"
+        matBadgeOverlap="false"
+        matBadgeColor="warn"
+        class="header-badge"
+        aria-hidden="false"
+        >menu</mat-icon
+      >
+    </button>
+    <!-- --------------------------------------------------------------- -->
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>One Pice...</mat-label>
+      <input matInput [formControl]="searchControl" type="text" />
+      <button
+        mat-icon-button
+        matSuffix
+        color="accent"
+        aria-label="Clear"
+        *ngIf="searchControl.value"
+        (click)="limpiar()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <!-- <span class="flex-1-auto"></span> -->
+
+    <!-- --------------------------------------------------------------- -->
+    <!-- FullScreen -->
+    <!-- --------------------------------------------------------------- -->
+    <button mat-icon-button aria-label="Fullscreen" (click)="fullScream()">
+      <mat-icon
+        role="img"
+        class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color"
+        aria-hidden="true"
+        data-mat-icon-type="font"
+      >
+        fullscreen
+      </mat-icon>
+    </button>
+
+    <!-- --------------------------------------------------------------- -->
+    <!-- Notification Dropdown -->
+    <!-- --------------------------------------------------------------- -->
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="listaCarrito"
+      aria-label="Notifications"
+    >
+      <mat-icon
+        matBadge="1"
+        matBadgeOverlap="false"
+        matBadgeColor="warn"
+        class="header-badge"
+        aria-hidden="false"
+        >badge</mat-icon
+      >
+    </button>
+
+    <mat-menu #categorias="matMenu" class="topbar-dd cardWithShadow">
+      <div class="d-flex align-items-center p-x-32 p-y-16">
+        <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">Anime</h6>
+      </div>
+      @for(categorias of listaCategorias; track categorias) {
+      <button mat-menu-item class="p-x-32 p-y-16">
+        <div class="d-flex align-items-center">
+          <div class="m-l-16">
+            <h5 class="f-s-14 f-w-600 m-0 mat-subtitle-1">
+              {{ categorias }}
+            </h5>
+          </div>
+        </div>
+      </button>
+      }
+
+      <div class="p-y-12 p-x-32">
+        <button mat-stroked-button color="primary" class="w-100">
+          Ver todos los productos
+        </button>
+      </div>
+    </mat-menu>
+
+    <mat-menu #listaCarrito="matMenu" class="topbar-dd cardWithShadow">
+      <div class="d-flex align-items-center p-x-32 p-y-16">
+        <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">Carrito</h6>
+        <span class="m-l-auto">
+          <span class="bg-primary text-white p-x-8 p-y-4 f-w-500 rounded f-s-12"
+            >4 items</span
+          >
+        </span>
+      </div>
+      @for(notification of itemsCart; track notification.title) {
+      <button mat-menu-item class="p-x-32 p-y-16">
+        <div class="d-flex align-items-center">
+          <img [src]="notification.img" class="rounded-circle" width="48" />
+          <div class="m-l-16">
+            <h5 class="f-s-14 f-w-600 m-0 mat-subtitle-1">
+              {{ notification.title }}
+            </h5>
+            <span>{{ notification.subtitle }}</span>
+          </div>
+        </div>
+      </button>
+      }
+
+      <div class="p-y-12 p-x-32">
+        <button mat-stroked-button color="primary" class="w-100">
+          Ver todo
+        </button>
+      </div>
+    </mat-menu>
+
+    <div
+      *ngIf="!isAuthenticated"
+      [matMenuTriggerFor]="profilemenu"
+      class="profile-user"
+    >
+      <span class="profile__user-username align-middle"> Spider Man </span>
+      <span class="profile__user-rolname"> Development </span>
+    </div>
+
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="!isAuthenticated ? profilemenu : loginSuccess"
+      aria-label="Usuario"
+      style="margin-left: 5px"
+    >
+      <img
+        src="/assets/images/profile/profile2.png"
+        class="rounded-circle object-cover icon-35 profile-dd"
+        width="35"
+      />
+    </button>
+
+    <mat-menu #profilemenu="matMenu" class="topbar-dd cardWithShadow">
+      <ng-scrollbar class="position-relative" style="height: 647px">
+        <div class="p-x-32 p-y-16">
+          <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">
+            Inicia sesión para comprar
+          </h6>
+
+          <div class="text-center">
+            <img
+              src="/assets/images/profile/profile2.png"
+              class="rounded-circle"
+              width="95"
+            />
+          </div>
+        </div>
+        <div class="p-x-32">
+          @for(profile of profiledd; track profile.title) {
+          <a
+            class="p-y-16 text-decoration-none d-block text-hover-primary"
+            (click)="profile.action()"
+          >
+            <div class="d-flex align-items-center">
+              <button
+                mat-mini-fab
+                class="text-primary bg-light-primary shadow-none rounded"
+              >
+                <img [src]="profile.img" width="20" />
+              </button>
+
+              <div class="m-l-16">
+                <h5
+                  class="f-s-14 f-w-600 m-0 textprimary mat-subtitle-1 hover-text"
+                >
+                  {{ profile.title }}
+                </h5>
+              </div>
+            </div>
+          </a>
+          }
+        </div>
+      </ng-scrollbar>
+    </mat-menu>
+
+    <mat-menu #loginSuccess="matMenu" class="topbar-dd cardWithShadow">
+      <ng-scrollbar class="position-relative" style="height: 647px">
+        <div class="p-x-32 p-y-16">
+          <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">Perfil de Usuario</h6>
+
+          <div class="d-flex align-items-center p-b-24 b-b-1 m-t-16">
+            <img
+              src="/assets/images/profile/profile2.png"
+              class="rounded-circle"
+              width="95"
+            />
+            <div class="m-l-16">
+              <h6 class="f-s-14 f-w-600 m-0 mat-subtitle-1">Usuario 001</h6>
+              <span class="f-s-14 d-block m-b-4">Administrador</span>
+              <span class="d-flex align-items-center">
+                <i-tabler name="mail" class="icon-15 m-r-4"></i-tabler>
+                Torami Store
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="p-x-32">
+          @for(profile of loginSuccessMenu; track profile.title) {
+          <a
+            class="p-y-16 text-decoration-none d-block text-hover-primary"
+            [routerLink]="[profile.link]"
+          >
+            <div class="d-flex align-items-center">
+              <button
+                mat-mini-fab
+                class="text-primary bg-light-primary shadow-none rounded"
+              >
+                <img [src]="profile.img" width="20" />
+              </button>
+
+              <div class="m-l-16">
+                <h5
+                  class="f-s-14 f-w-600 m-0 textprimary mat-subtitle-1 hover-text"
+                >
+                  {{ profile.title }}
+                </h5>
+                <span class="mat-body-1">{{ profile.subtitle }}</span>
+              </div>
+            </div>
+          </a>
+          }
+        </div>
+
+        <div class="p-y-12 p-x-32">
+          <a
+            [routerLink]="['/authentication/side-login']"
+            mat-stroked-button
+            color="primary"
+            class="w-100"
+            >Cerrar Sesión</a
+          >
+        </div>
+      </ng-scrollbar>
+    </mat-menu>
+  </div>
+</header>
+
+<body>
+  <ng-container>
+    <div class="container">
+      <div class="products">
+        <div class="nav-bar">
+          <h3>Lista de categorías</h3>
+          <ng-scrollbar
+            class="position-relative mini-scroll"
+            style="height: calc(100vh - 230px)"
+          >
+            <mat-nav-list>
+              <mat-list-item>
+                <!-- <i-tabler name="home" matListItemIcon></i-tabler
+                > -->
+                Naruto</mat-list-item
+              >
+              <mat-list-item>Naruto</mat-list-item>
+              <mat-list-item>Naruto</mat-list-item>
+            </mat-nav-list>
+          </ng-scrollbar>
+        </div>
+        <div class="lista-products">
+          <div class="grid"></div>
+          <app-product></app-product>
+          <!-- <mat-paginator
+            [length]="totalProductos"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="[5, 10, 20]"
+            (page)="cambiarPagina($event)"
+          >
+          </mat-paginator> -->
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</body>
