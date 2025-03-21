@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ToramiStore/ToramiStore.iml" filepath="$PROJECT_DIR$/ToramiStore/ToramiStore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ToramiStore.iml" filepath="$PROJECT_DIR$/.idea/ToramiStore.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ToramiStoreProyecto.iml" filepath="$PROJECT_DIR$/.idea/ToramiStoreProyecto.iml" />
     </modules>
   </component>
